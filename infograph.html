@@ -30,7 +30,9 @@ circle {
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: auto;
+/*
   position: relative;
+*/
   width: 100%;
 }
 
@@ -40,33 +42,43 @@ body {
 
 #nav {
   position: absolute;
-  z-index: 100;
+  z-index: 99;
 }
 
 #nav {
   float: right;
-  right: 10px;
+  right: 20px;
   top: 10px;
+}
+
+.footer {
+  padding-left: 20px;
+  padding-right: 20px;
+  font: 12px sans-serif;
 }
 
 hr {
   border: none;
-  height: 1px;
+  height: .5px;
   /* Set the hr color */
+  /*
   color: #333; /* old IE */
   background-color: #333; /* Modern Browsers */
+  */
+  color: rgba(0, 0, 0, 0.55);
 }
 
 </style>
 <body>
+<!--
+<div id="nav" style="width:100%">
+-->
 <div id="nav">
-<form>
   <label><input id="input_needs" type="radio" name="dataset" value="apples"> Client Needs</label>
   <label><input id="input_companies" type="radio" name="dataset" value="oranges"> Clients</label>
-</form>
-<div id="graph_div">
 </div>
-<div class="text">
+<div id="graph_div"></div>
+<div class="footer">
 <hr>Source: Oracle.com
 &nbsp;&nbsp;&nbsp;&nbsp;
 &copy; <a href="https://Vidd.ai" target="_blank">Vidd.ai</a> All rights reserved
