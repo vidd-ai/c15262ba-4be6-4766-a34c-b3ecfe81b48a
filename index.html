@@ -6,6 +6,20 @@
 <script src="http://colorbrewer2.org/export/colorbrewer.js"></script>
 -->
 <style>
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
 path.link {
   fill: none;
@@ -40,6 +54,7 @@ body {
   font: 12px sans-serif;
 }
   
+/* vidd orange */
 label {
     color: #fd8d3c;
 }
@@ -47,7 +62,6 @@ label {
 #nav {
   position: absolute;
   z-index: 99;
-
 }
 
 #nav {
@@ -56,10 +70,19 @@ label {
   top: 10px;
 }
 
+#graph_div {
+  position: absolute;
+  width: 100%;
+}
+
 .footer {
   padding-left: 20px;
   padding-right: 20px;
   font: 12px sans-serif;
+  position: fixed; 
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 hr {
@@ -79,8 +102,8 @@ hr {
 <div id="nav" style="width:100%">
 -->
 <div id="nav">
-  <label><input id="input_needs" type="radio" name="dataset" value="apples"> Client Needs</label>
-  <label><input id="input_companies" type="radio" name="dataset" value="oranges"> Clients</label>
+  <label><input id="input_needs" type="radio" name="dataset" value="apples"> Customer Needs</label>
+  <label><input id="input_companies" type="radio" name="dataset" value="oranges"> Customers</label>
 </div>
 <div id="graph_div"></div>
 <div class="footer">
@@ -91,6 +114,20 @@ hr {
 <script>
 
 // get the data
+
+var width, height;
+width = window.innerWidth;
+height = window.innerHeight;
+
+window.addEventListener( 'resize', onWindowResize, false );
+function onWindowResize() {
+width = window.innerWidth;
+height = window.innerHeight;
+
+console.log('width:',width);
+console.log('height:',height);
+}
+
 d3.csv("infograph.csv", function(error, links) {
 
 var nodes = {};
@@ -113,11 +150,8 @@ links.forEach(function(link) {
     link.value = +link.value;
     //link.value = +link.value * .5;
 });
-console.log('nodes:',nodes);
-console.log('links:',links);
-
-var width = 960,
-    height = 650;
+//console.log('nodes:',nodes);
+//console.log('links:',links);
 
 var color = d3.scale.category20();
 
@@ -132,8 +166,14 @@ var force = d3.layout.force()
 
 //var svg = d3.select("body").append("svg")
 var svg = d3.select("#graph_div").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+    //.attr("width", width)
+    //.attr("height", height);
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    //.attr("viewBox", "0 0 600 400")
+    .attr("viewBox", "0 0 " + width + " " + height )
+    //class to make it responsive
+    .classed("svg-content-responsive", true) 
+    .attr("transform", "scale(1, 1)");
 
 // build the arrow.
 svg.append("svg:defs").selectAll("marker")
@@ -272,7 +312,8 @@ if (summary_type.match(/needs/i)) {
     } else {
       summary_type = 'Needs';
     }
-    s = 'infograph.html?c=' + summary_type;
+    //s = 'infograph.html?c=' + summary_type;
+    s = 'index.html?c=' + summary_type;
     window.location.href = s;
   }
 
